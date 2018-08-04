@@ -3,7 +3,7 @@
 
 import numpy as np
 import cv2 as cv
-
+import cameraShot as cap
 
 
 def detect(img, cascade):
@@ -45,6 +45,8 @@ if __name__ == '__main__':
                 roi = gray[y1:y2, x1:x2]
                 vis_roi = vis[y1:y2, x1:x2]
                 subrects = detect(roi.copy(), nested)
+                if len(subrects) > 0 :
+                    cap.capture(cam)
                 draw_rects(vis_roi, subrects, (255, 0, 0))
 
         cv.imshow('facedetect', vis)

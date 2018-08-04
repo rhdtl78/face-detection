@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import cv2
 
-CAM_ID = 1
-def capture(camid = CAM_ID):
-    cam = cv2.VideoCapture(camid)
+def capture(cam):
     if cam.isOpened() == False:
         print ('cant open the cam (%d)' % camid)
         return None

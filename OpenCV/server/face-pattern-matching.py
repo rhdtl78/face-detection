@@ -19,7 +19,7 @@ def draw_rects(img, rects, color):
 
 
 # cap 이 정상적으로 open이 되었는지 확인하기 위해서 cap.isOpen() 으로 확인가능
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 if (cap.isOpened()) :
     print 'Cannot Open Cam'

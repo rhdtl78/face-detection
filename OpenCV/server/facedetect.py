@@ -5,7 +5,6 @@ import numpy as np
 import cv2 as cv
 import cameraShot as cap
 
-
 def detect(img, cascade):
     rects = cascade.detectMultiScale(img,
                                      scaleFactor=1.3,
@@ -22,12 +21,11 @@ def draw_rects(img, rects, color):
         cv.rectangle(img, (x1, y1), (x2, y2), color, 2)
 
 if __name__ == '__main__':
-
     # 표시자 지정
     cascade = cv.CascadeClassifier("haarcascades/haarcascade_frontalface_alt.xml")
     nested = cv.CascadeClassifier("haarcascades/haarcascade_eye.xml")
 
-    cam = cv.VideoCapture(1)
+    cam = cv.VideoCapture(0)
 
     while True:
         ret, img = cam.read()

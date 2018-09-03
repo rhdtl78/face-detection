@@ -1,0 +1,38 @@
+깃허브를 이용해 본 프로젝트의 형상관리를 진행.
+
+master branch는 팀장 공정훈 외에는 수정/커밋/푸쉬하지 말것.
+혹여 충돌이 발생했을 경우 해결 가능하다면 해결하고 힘들다면 팀장 연락.
+
+기본 진행은 develop branch로부터 새 branch를 만들어 개발.
+각 브랜치는 기능의 단위로 분기를 나눈다.
+관련 문서 : http://amazingguni.github.io/blog/2016/03/git-branch-%EA%B7%9C%EC%B9%99
+
+현재 develop의 상태를 기반으로 새 브랜치 만들기.
+
+git checkout -t [만들고 싶은 branch명] develop
+
+현재 상태 확인
+git status
+
+변경 사항 스테이징 (커밋 준비)
+git add [filename]
+  option -A : 모든 변경사항 스테이징
+
+변경 사항 커밋
+git commit -m "커밋 내용 / 메세지"
+  커밋 내용은 아래의 형식을 따른다.
+
+    제목
+
+    간략한 커밋 설명
+
+    ex) 로그인 기능 추가
+
+        인증 제공자 google로 구글 계정 연동 로그인 기능 구현
+
+현재 브랜치의 커밋 히스토리 확인
+git log
+
+반드시 알아야 하는 깃 명령어
+git merge : https://backlog.com/git-tutorial/kr/stepup/stepup2_4.html
+git stash : https://git-scm.com/book/ko/v2/Git-%EB%8F%84%EA%B5%AC-Stashing%EA%B3%BC-Cleaning

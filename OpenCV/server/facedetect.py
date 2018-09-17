@@ -4,6 +4,17 @@
 import numpy as np
 import cv2 as cv
 import cameraShot as cap
+import threading
+
+class CameraThread():
+    def __init__(self, cam):
+        self.isCaptured = False
+        self.cam = cam
+    def run(self):
+        print ("Captured")
+        cap.capture(self.cam, self.isCaptured)
+        self.isCaptured = True
+
 
 def detect(img, cascade):
     rects = cascade.detectMultiScale(img,
@@ -25,9 +36,18 @@ if __name__ == '__main__':
     cascade = cv.CascadeClassifier("haarcascades/haarcascade_frontalface_alt.xml")
     nested = cv.CascadeClassifier("haarcascades/haarcascade_eye.xml")
 
-    cam = cv.VideoCapture(0)
+    cam = cv.VideoCapture(1)
+    
+    isCaptured = False
+    
+    tread = CameraThread(cam)
+    threadCount = 0;
+    camThread = threading.Timer(3,tread.run,args=[cam])
 
     while True:
+        if(isCaptured == True):
+            break
+            
         ret, img = cam.read()
         gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         gray = cv.equalizeHist(gray)
@@ -39,17 +59,22 @@ if __name__ == '__main__':
 
         #눈 감지
         if not nested.empty():
-            for x1, y1, x2, y2 in rects:
+             for x1, y1, x2, y2 in rects:
                 roi = gray[y1:y2, x1:x2]
                 vis_roi = vis[y1:y2, x1:x2]
                 subrects = detect(roi.copy(), nested)
-                if len(subrects) > 0 :
-                    cap.capture(cam)
                 draw_rects(vis_roi, subrects, (255, 0, 0))
-
+                if len(subrects) > 0 :
+                    if(camThread.isAlive() == False and isCaptured == False and threadCount < 1): 
+                        threadCount = threadCount + 1;
+                        camThread.start()
+                        
+                        
         cv.imshow('facedetect', vis)
-
-        if cv.waitKey(1) & 0xFF == ord('q'):
+        
+         print(id(isCaptured))
+        if (cv.waitKey(1) & 0xFF == ord('q')) or (thread.isCaptured == True):
             break
-
+     
     cv.destroyAllWindows()
+    cam.release()

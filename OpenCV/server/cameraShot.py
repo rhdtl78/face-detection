@@ -13,7 +13,3 @@ def capture(cam):
 
     # png로 압축 없이 영상 저장
     cv2.imwrite('image.jpg',frame, params=[cv2.IMWRITE_PNG_COMPRESSION,0])
-    cam.release()
-
-if __name__ == '__main__':
-    capture()

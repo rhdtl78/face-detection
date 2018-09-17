@@ -4,6 +4,18 @@
 import numpy as np
 import cv2 as cv
 import cameraShot as cap
+import threading
+
+class CameraThread() :
+    def __init__(self, cam):
+        self.isCaptured = False
+        self.cam = cam
+    def run(self):
+        print ("Captured")
+        cap.capture(self.cam)
+        self.isCaptured = True
+
+
 
 def detect(img, cascade):
     rects = cascade.detectMultiScale(img,
@@ -27,7 +39,14 @@ if __name__ == '__main__':
 
     cam = cv.VideoCapture(0)
 
+    isCaptured = False
+    
+    thread = CameraThread(cam)
+    threadCount = 0;
+    camThread = threading.Timer(3,thread.run)
     while True:
+        if(isCaptured == True): break
+        
         ret, img = cam.read()
         gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         gray = cv.equalizeHist(gray)
@@ -43,13 +62,17 @@ if __name__ == '__main__':
                 roi = gray[y1:y2, x1:x2]
                 vis_roi = vis[y1:y2, x1:x2]
                 subrects = detect(roi.copy(), nested)
-                if len(subrects) > 0 :
-                    cap.capture(cam)
                 draw_rects(vis_roi, subrects, (255, 0, 0))
+                if len(subrects) > 0 :
+                    if(camThread.isAlive() == False and thread.isCaptured == False and threadCount < 1): 
+                        threadCount = threadCount + 1;
+                        camThread.start()
 
         cv.imshow('facedetect', vis)
 
-        if cv.waitKey(1) & 0xFF == ord('q'):
+        if (cv.waitKey(1) & 0xFF == ord('q')) or (thread.isCaptured == True):
             break
+        
 
     cv.destroyAllWindows()
+    cam.release()

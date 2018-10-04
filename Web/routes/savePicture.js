@@ -13,7 +13,8 @@ var storage = multer.diskStorage({
 var uploadDir = multer({storage: storage});
 /* GET home page. */
 router.post('/', uploadDir.single('file'), function (req, res, next) {
-  // TODO: 저장된 이미지를 학습, 식별하기.
+  // TODO: 저장된 이미지를 학습, 식별하기.\
+  console.log(req.file);
 
   res.send({message : "image uploaded"});
 });

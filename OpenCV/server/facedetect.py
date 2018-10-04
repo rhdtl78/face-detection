@@ -5,7 +5,7 @@ import numpy as np
 import cv2 as cv
 import cameraShot as cap
 import threading
-
+import sendPic
 class CameraThread() :
     def __init__(self, cam):
         self.isCaptured = False
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     cascade = cv.CascadeClassifier("haarcascades/haarcascade_frontalface_alt.xml")
     nested = cv.CascadeClassifier("haarcascades/haarcascade_eye.xml")
 
-    cam = cv.VideoCapture(1)
+    cam = cv.VideoCapture(0)
 
     isCaptured = False
 
@@ -79,6 +79,9 @@ if __name__ == '__main__':
         if (cv.waitKey(1) & 0xFF == ord('q')) or (thread.isCaptured == True):
             break
 
-
+   
+    with open("image.jpg", "rb") as image :
+        sendPic.sendPic(image)
+    
     cv.destroyAllWindows()
     cam.release()

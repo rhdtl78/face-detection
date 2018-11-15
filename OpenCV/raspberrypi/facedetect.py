@@ -41,14 +41,8 @@ if __name__ == '__main__':
 
     isCaptured = False
 
-    tread = CameraThread(cam)
-    threadCount = 0;
-    camThread = threading.Timer(3,tread.run,args=[cam])
-
-    isCaptured = False
-
     thread = CameraThread(cam)
-    threadCount = 0;
+    threadCount = 0
     camThread = threading.Timer(3,thread.run)
     while True:
         if(isCaptured == True): break
@@ -71,7 +65,7 @@ if __name__ == '__main__':
                 draw_rects(vis_roi, subrects, (255, 0, 0))
                 if len(subrects) > 0 :
                     if(camThread.isAlive() == False and thread.isCaptured == False and threadCount < 1):
-                        threadCount = threadCount + 1;
+                        threadCount = threadCount + 1
                         camThread.start()
 
         cv.imshow('facedetect', vis)
@@ -81,7 +75,7 @@ if __name__ == '__main__':
 
    
     with open("image.jpg", "rb") as image :
-        sendPic.sendPic(image)
+        sendPic.sendPic()
     
     cv.destroyAllWindows()
     cam.release()

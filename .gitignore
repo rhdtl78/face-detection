@@ -3,4 +3,4 @@
 *.jpeg
 *.bmp
 *.swp
-Web/node_modules/*
+node_modules

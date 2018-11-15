@@ -11,15 +11,26 @@ var storage = multer.diskStorage({
   }
 });
 const shell = require('shelljs');
+require('date-utils');
+
 
 var uploadDir = multer({storage: storage});
 /* GET home page. */
 router.post('/', uploadDir.single('file'), function (req, res, next) {
   console.log(req.file);
+  try {
 
-  shell.exec('../openface/infer.sh', function(code, stdout, stderr){
-    console.log(stdout);
-  });
+	  shell.exec('openface/infer.sh', function(code, stdout, stderr){
+		let result = JSON.parse(stdout);
+		console.log(result);
+	  });
+
+
+  } catch (err) {
+	console.log(err);
+
+  }
+
   res.send({message : "image uploaded"});
 });
 

@@ -4,3 +4,4 @@
 *.bmp
 *.swp
 node_modules
+*.pyc

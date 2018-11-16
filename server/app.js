@@ -12,7 +12,7 @@ const enteranceRouter = require('./routes/enterlance_log');
 const mongoose = require("mongoose");
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/openface', {
+mongoose.connect('mongodb://admin:#Wkdsks45@ds161446.mlab.com:61446/openface', {
   useNewUrlParser: true
 });
 

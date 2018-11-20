@@ -191,16 +191,17 @@ def infer(args, multiple=False):
             maxI = np.argmax(predictions)
             person = le.inverse_transform(maxI)
             confidence = predictions[maxI]
-            if args.verbose:
-                print("Prediction took {} seconds.".format(time.time() - start))
-            if multiple:
-                print("Predict {} @ x={} with {:.2f} confidence.".format(person.decode('utf-8'), bbx,
-                                                                         confidence))
-            else:
-                print("Predict {} with {:.2f} confidence.".format(person.decode('utf-8'), confidence))
-            if isinstance(clf, GMM):
-                dist = np.linalg.norm(rep - clf.means_[maxI])
-                print("  + Distance from the mean: {}".format(dist))
+            # if args.verbose:
+            #     print("Prediction took {} seconds.".format(time.time() - start))
+            # if multiple:
+            #     print("Predict {} @ x={} with {:.2f} confidence.".format(person.decode('utf-8'), bbx,
+            #                                                              confidence))
+            # else:
+            #     print("Predict {} with {:.2f} confidence.".format(person.decode('utf-8'), confidence))
+            # if isinstance(clf, GMM):
+            #     dist = np.linalg.norm(rep - clf.means_[maxI])
+            #     print("  + Distance from the mean: {}".format(dist))
+
 
 
 if __name__ == '__main__':
@@ -290,4 +291,4 @@ Use `--networkModel` to set a non-standard Torch network model.""")
     if args.mode == 'train':
         train(args)
     elif args.mode == 'infer':
-        infer(args, args.multi)
+        return infer(args, args.multi)

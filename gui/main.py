@@ -61,9 +61,12 @@ class MainFrame:
 			if len(subrects) > 0:
 				if not self.thread.isAlive() and not self.thread.isCaptured and self.threadCount < 1:
 					self.threadCount = self.threadCount + 1
+					self.resultLabel.configure(text="촬영중")
 					self.thread.start()
 
-		imgPIL = PIL.Image.fromarray(vis)
+		b, g, r = cv2.split(vis)
+		rgbimg = cv2.merge([r,g,b])
+		imgPIL = PIL.Image.fromarray(rgbimg)
 		imgtk = ImageTk.PhotoImage(image=imgPIL)
 		self.camera.imgtk = imgtk
 		self.camera.configure(image=imgtk)
@@ -71,14 +74,14 @@ class MainFrame:
 
 		if self.thread.isCaptured:
 			self.resultLabel.configure(text="촬영됨")
-			ret = 'none'
-			ret = self.state is "init" and sendPic() or ret
-			if self.state is "pending":
-				if ret:
-					print (ret)
-					self.state = "done"
-			elif self.state is "done":
-				self.resultLabel.configure(text=ret)
+		# 	ret = 'none'
+		# 	ret = self.state is "init" and sendPic() or ret
+		# 	if self.state is "pending":
+		# 		if ret:
+		# 			print (ret)
+		# 			self.state = "done"
+		# 	elif self.state is "done":
+		# 		self.resultLabel.configure(text=ret)
 
 	def start(self):
 		if self.started == False:

@@ -3,5 +3,5 @@
 *.jpeg
 *.bmp
 *.swp
-node_modules
 *.pyc
+site-packages

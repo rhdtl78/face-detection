@@ -22,11 +22,13 @@ class MainFrame:
 
 		self.camera = Label(self.window, text="Camera")
 		self.resultLabel = Label(self.result, text="결과창", width=20)
+		self.sendButton = Button(self.result, text="요청", width=20, command=self.sendImage)
 
 		self.result.grid(row=0, column=1)
 		self.camera.grid(row=0, column=0)
 
 		self.resultLabel.grid(row=0)
+		self.sendButton.grid(row=1)
 
 		self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 		self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
@@ -38,12 +40,16 @@ class MainFrame:
 		self.threadCount = 0
 		self.state = "init"
 
+	def getFrame(self):
+		_, img = self.cap.read()
+		return img
+
 	def show_frame(self, snapshot=None):
 
 		if self.isCaptured:
 			return
 
-		_, img = self.cap.read()
+		img = self.getFrame()
 		gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 		gray = cv2.equalizeHist(gray)
 
@@ -64,8 +70,7 @@ class MainFrame:
 					self.resultLabel.configure(text="촬영중")
 					self.thread.start()
 
-		b, g, r = cv2.split(vis)
-		rgbimg = cv2.merge([r,g,b])
+		rgbimg = self.BGRtoRGB(vis)
 		imgPIL = PIL.Image.fromarray(rgbimg)
 		imgtk = ImageTk.PhotoImage(image=imgPIL)
 		self.camera.imgtk = imgtk
@@ -74,14 +79,21 @@ class MainFrame:
 
 		if self.thread.isCaptured:
 			self.resultLabel.configure(text="촬영됨")
-		# 	ret = 'none'
-		# 	ret = self.state is "init" and sendPic() or ret
-		# 	if self.state is "pending":
-		# 		if ret:
-		# 			print (ret)
-		# 			self.state = "done"
-		# 	elif self.state is "done":
-		# 		self.resultLabel.configure(text=ret)
+
+	def sendImage(self):
+			ret = 'none'
+			ret = self.state is "init" and sendPic() or ret
+			if self.state is "pending":
+				if ret:
+					print (ret)
+					self.state = "done"
+			elif self.state is "done":
+				self.resultLabel.configure(text=ret)
+
+	def BGRtoRGB(self, img):
+		b,g,r = cv2.split(img)
+		rgbimg = cv2.merge([r,g,b])
+		return rgbimg
 
 	def start(self):
 		if self.started == False:

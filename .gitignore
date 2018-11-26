@@ -5,3 +5,5 @@
 *.swp
 *.pyc
 site-packages
+.idea
+venv/
